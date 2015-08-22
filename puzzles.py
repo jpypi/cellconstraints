@@ -60,7 +60,7 @@ p3 = """
 """
 
 # Difficulty: 5 star
-# Results: NOT SOLVED
+# Results: 9
 p4 = """
 0 0 5 0 0 0 2 3 0
 0 8 1 0 6 0 0 0 0

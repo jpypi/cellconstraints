@@ -15,7 +15,7 @@ def hashableIter(iterable):
     Must support sorted()
     """
     import hashlib
-    return hashlib.sha1("".join(map(str,iterable)))
+    return hashlib.sha1("".join(map(str,sorted(iterable)))).hexdigest()
 
 
 class Puzzle:
@@ -61,16 +61,29 @@ class Puzzle:
                     self.cells[r][c] = list(possibilities)
 
     def logicisze(self):
-        for r,row in enumerate(self.cells):
+        # Iterate through the rows
+        for r, row in enumerate(self.cells):
             sames = {}
 
-            for c,cell in enumerate(row):
-                sames[hashableIter(cell)] = sames.get(hashableIter(cell), []).append((r,c))
+            # Iterate through the cells in the each row and build a hashmap
+            # of the ones with the same possiblities
+            for c, cell in enumerate(row):
+                if len(cell) > 1:
+                    sames[hashableIter(cell)] = sames.get(hashableIter(cell), [])
+                    sames[hashableIter(cell)].append((r, c))
 
-            for key, value in sames.iteritems():
-                if len(key) == len(value):
-                    print key, value
-
+            for _, cells in sames.iteritems():
+                # If the number of cells with the same posibilites == the number
+                # of posibilities within their similarity group
+                possibilities = set(self.cells[cells[0][0]][cells[0][1]])
+                if len(cells) == len(possibilities) :
+                    if len(cells) == 3:
+                        print "WOAH!"
+                    for c, cell in enumerate(row):
+                        if (r, c) not in cells:
+                            self.cells[r][c] = list(set(cell) - possibilities)
+                    #self.getColCells()
+                    #self.getClusterCells(self.getCellCluster(())
 
 
     def correct(self, group):
@@ -148,7 +161,7 @@ p = Puzzle(getDefaultSudokuFill)
 # 2 cells w/2 possiblities = no other cells may have those number
 
 # Set which puzzle to solve
-data = p4
+data = p3
 data = map(lambda x: map(int, x.strip().split(" ")), data.strip().split("\n"))
 
 for r in xrange(len(data)):
@@ -177,9 +190,20 @@ while True:
         print p.getRowCells(int(i.lstrip("r")))
     elif i.startswith("l"):
         p.logicisze()
+    elif i.startswith("s"):
+        print("Solving...")
+        while True:
+            p.verifyConstraints()
+            p.logicisze()
+            if last == p.cells:
+                break
+            last = deepcopy(p.cells)
+        p.prettyPrint()
+
     else:
         print
         p.verifyConstraints()
+        p.logicisze()
         p.prettyPrint()
         print "Same as last: %s"%(last == p.cells)
         last = deepcopy(p.cells)
