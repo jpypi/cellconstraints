@@ -77,7 +77,7 @@ class Puzzle:
                 # of posibilities within their similarity group
                 possibilities = set(self.cells[cells[0][0]][cells[0][1]])
                 if len(cells) == len(possibilities) :
-                    if len(cells) == 3:
+                    if len(cells) > 2:
                         print "WOAH!"
                     for c, cell in enumerate(row):
                         if (r, c) not in cells:
@@ -160,8 +160,8 @@ p = Puzzle(getDefaultSudokuFill)
 # 5 stars require
 # 2 cells w/2 possiblities = no other cells may have those number
 
-# Set which puzzle to solve
-data = p3
+# Set which puzzle to solve and parse the puzzle string format
+data = p5
 data = map(lambda x: map(int, x.strip().split(" ")), data.strip().split("\n"))
 
 for r in xrange(len(data)):
@@ -178,8 +178,10 @@ last = deepcopy(p.cells)
 
 while True:
     i = raw_input(">>> ")
+
     if i.startswith("q"):
         break
+
     elif i.startswith("rp"):
         print p.getRowPossibilities(int(i.lstrip("rp")))
     elif i.startswith("cp"):
@@ -190,6 +192,21 @@ while True:
         print p.getRowCells(int(i.lstrip("r")))
     elif i.startswith("l"):
         p.logicisze()
+
+    elif i.startswith("pr"):
+        for row in p.cells:
+            print row
+
+    elif i.startswith("pc"):
+        for i in xrange(9):
+            print p.getColCells(i)
+
+    elif i.startswith("pg"):
+        for r in xrange(3):
+            for c in xrange(3):
+                print (r, c)
+                print p.getClusterCells((r, c))
+
     elif i.startswith("s"):
         print("Solving...")
         while True:
