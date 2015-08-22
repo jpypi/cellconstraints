@@ -1,10 +1,14 @@
 #!/usr/bin/env python2
 
-from copy import copy, deepcopy
 import sys
+from copy import copy, deepcopy
+
+# Import all the puzzles for testing
+from puzzles import *
 
 
 full_set = {1,2,3,4,5,6,7,8,9}
+
 
 def hashableIter(iterable):
     """
@@ -12,6 +16,7 @@ def hashableIter(iterable):
     """
     import hashlib
     return hashlib.sha1("".join(map(str,iterable)))
+
 
 class Puzzle:
     """
@@ -139,123 +144,12 @@ def getDefaultSudokuFill(x,y):
 
 p = Puzzle(getDefaultSudokuFill)
 
-# Dificulty: easy
-# Results: 5 steps
-p0 = """
-0 8 0 0 0 4 5 0 0
-0 7 0 0 0 3 2 4 0
-3 0 4 0 0 0 0 9 0
-0 1 9 7 0 0 0 0 0
-0 2 0 0 3 0 0 5 0
-0 0 0 0 0 6 1 8 0
-0 4 0 0 0 0 8 0 5
-0 9 5 8 0 0 0 3 0
-0 0 7 1 0 0 0 6 0
-"""
-
-
-# Difficulty 1 star
-# Results: 3 steps
-p1 = """
-0 9 0 2 0 0 0 3 0
-1 0 0 6 0 8 0 0 4
-2 7 6 0 0 0 9 5 8
-0 1 0 0 0 0 0 8 9
-0 0 0 1 3 7 0 0 0
-5 4 0 0 0 0 0 2 0
-4 5 2 0 0 0 3 9 6
-3 0 0 9 0 6 0 0 7
-0 6 0 0 0 4 0 1 0
-"""
-
-# Difficulty 2 star
-# Results: 4 steps
-p2 = """
-9 0 0 0 0 0 0 0 7
-0 0 3 0 5 0 4 0 0
-0 0 5 2 0 6 9 0 0
-0 0 8 0 4 0 2 0 0
-0 4 0 3 2 1 0 9 0
-0 0 7 0 8 0 5 0 0
-0 0 2 5 0 4 1 0 0
-0 0 4 0 9 0 8 0 0
-1 0 0 0 0 0 0 0 6
-"""
-
-# Difficulty: 4 star
-# Results: 8
-p3 = """
-4 0 0 0 0 1 0 6 0
-0 0 5 0 0 9 0 0 1
-0 2 0 0 0 0 3 0 0
-0 0 0 1 9 0 0 2 7
-0 0 0 2 0 6 0 0 0
-9 5 0 0 8 4 0 0 0
-0 0 3 0 0 0 0 5 0
-7 0 0 3 0 0 9 0 0
-0 4 0 8 0 0 0 0 3
-"""
-
-# Difficulty: 5 star
-# Results: NOT SOLVED
-p4 = """
-0 0 5 0 0 0 2 3 0
-0 8 1 0 6 0 0 0 0
-0 0 0 7 0 5 0 0 1
-0 0 7 0 0 0 1 0 0
-4 0 0 0 2 0 0 0 9
-0 0 6 0 0 0 8 0 0
-5 0 0 8 0 7 0 0 0
-0 0 0 0 1 0 9 5 0
-0 1 2 0 0 0 6 0 0
-"""
-
-# Difficulty: 5 star
-# Results: NOT SOLVED
-p5 = """
-0 0 0 1 5 0 0 0 0
-4 0 5 0 0 0 3 0 1
-0 0 9 0 0 0 0 4 0
-0 0 0 0 0 2 6 0 5
-0 0 0 0 3 0 0 0 0
-9 0 7 4 0 0 0 0 0
-0 4 0 0 0 0 2 0 0
-8 0 2 0 0 0 9 0 3
-0 0 0 0 6 1 0 0 0
-"""
-
-# Difficulty: 4 star
-# Results: 7 steps
-p6 = """
-0 9 0 0 8 0 0 7 0
-1 0 0 7 0 9 0 0 6
-0 0 0 0 0 0 0 0 0
-0 4 0 0 9 0 0 1 0
-6 0 0 1 7 3 0 0 5
-0 7 0 0 6 0 0 9 0
-0 0 0 0 0 0 0 0 0
-5 0 0 8 0 6 0 0 1
-0 2 0 0 1 0 0 3 0
-"""
-
-# Making my own...
-pt = """
-1 0 0 0 0 0 0 0 0
-0 7 0 0 3 0 0 8 0
-0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0
-0 2 0 0 1 0 0 4 0
-0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0
-0 6 0 0 5 0 0 9 0
-0 0 0 0 0 0 0 0 1
-"""
-
 # 5 stars require
 # 2 cells w/2 possiblities = no other cells may have those number
 
+# Set which puzzle to solve
 data = p4
-data = map(lambda x: map(int,x.strip().split(" ")), data.strip().split("\n"))
+data = map(lambda x: map(int, x.strip().split(" ")), data.strip().split("\n"))
 
 for r in xrange(len(data)):
     for c in xrange(len(data[0])):
